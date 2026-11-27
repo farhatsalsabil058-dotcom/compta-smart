@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compta Smart</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f7f3fc;
+ color:#38264f;
+}
+header{
+ background:linear-gradient(135deg,#49236e,#8051a9);
+ color:white;
+ text-align:center;
+ padding:30px 15px;
+ border-bottom:4px solid #d9b66d;
+ border-radius:0 0 25px 25px;
+}
+header h1{margin:0;font-size:29px}
+header p{margin:10px 0 0}
+.container{max-width:600px;margin:auto;padding:18px}
+h2{color:#71459b}
+.menu{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+.menu button{
+ background:white;
+ border:1px solid #eadcf5;
+ border-bottom:4px solid #c7a45d;
+ border-radius:17px;
+ padding:24px 8px;
+ min-height:140px;
+ color:#643b8b;
+ font-size:17px;
+ font-weight:bold;
+ box-shadow:0 4px 12px #ddd2e8;
+}
+.menu span{
+ display:block;
+ font-size:36px;
+ margin-bottom:12px;
+}
+.page{
+ display:none;
+ background:white;
+ padding:20px;
+ border-radius:17px;
+ box-shadow:0 4px 12px #ddd2e8;
+}
+.page.active{display:block}
+.back{
+ background:#eee5f7;
+ color:#643b8b;
+ border:0;
+ padding:10px 16px;
+ border-radius:9px;
+ margin-bottom:12px;
+}
+label{
+ display:block;
+ font-weight:bold;
+ margin:13px 0 6px;
+}
+input{
+ width:100%;
+ padding:13px;
+ border:1px solid #d8c6e8;
+ border-radius:9px;
+ font-size:16px;
+}
+.action{
+ width:100%;
+ background:#70439a;
+ color:white;
+ border:0;
+ border-bottom:3px solid #c9a55f;
+ padding:14px;
+ margin-top:16px;
+ border-radius:10px;
+ font-size:16px;
+ font-weight:bold;
+}
+.result{
+ background:#f3ecfa;
+ padding:14px;
+ border-right:4px solid #c9a55f;
+ border-radius:9px;
+ margin-top:15px;
+ white-space:pre-line;
+ line-height:1.9;
+}
+footer{
+ text-align:center;
+ padding:25px;
+ color:#8e78a1;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>💜 Compta Smart</h1>
+<p>رفيقك الذكي في عالم المحاسبة</p>
+<small>Accounting made easier ✨</small>
+</header>
+
+<div class="container">
+
+<!-- القائمة الرئيسية -->
+<div id="home">
+<h2>🏠 القائمة الرئيسية</h2>
+<p>اختاري الخدمة المحاسبية:</p>
+
+<div class="menu">
+
+<button onclick="openPage('balance')">
+<span>⚖️</span>
+الميزانية
+</button>
+
+<button onclick="openPage('profit')">
+<span>📊</span>
+الأرباح والخسائر
+</button>
+
+<button onclick="openPage('cost')">
+<span>🧮</span>
+سعر التكلفة
+</button>
+
+<button onclick="openPage('analytic')">
+<span>📈</span>
+المحاسبة التحليلية
+</button>
+
+</div>
+</div>
+
+<!-- الميزانية -->
+<div class="page" id="balance">
+<button class="back" onclick="goHome()">⬅ رجوع</button>
+<h2>⚖️ حساب الميزانية</h2>
+
+<label>الأصول الثابتة (DA)</label>
+<input type="number" id="fixed" min="0">
+
+<label>الأصول المتداولة (DA)</label>
+<input type="number" id="current" min="0">
+
+<label>الخصوم (DA)</label>
+<input type="number" id="liabilities" min="0">
+
+<label>رأس المال (DA)</label>
+<input type="number" id="capital" min="0">
+
+<button class="action" onclick="calculateBalance()">تحقق من التوازن</button>
+<div class="result" id="balanceResult">النتيجة تظهر هنا</div>
+</div>
+
+<!-- الأرباح والخسائر -->
+<div class="page" id="profit">
+<button class="back" onclick="goHome()">⬅ رجوع</button>
+<h2>📊 الأرباح والخسائر</h2>
+
+<label>الإيرادات (DA)</label>
+<input type="number" id="revenue" min="0">
+
+<label>المصاريف (DA)</label>
+<input type="number" id="expenses" min="0">
+
+<button class="action" onclick="calculateProfit()">احسب النتيجة</button>
+<div class="result" id="profitResult">النتيجة تظهر هنا</div>
+</div>
+
+<!-- سعر التكلفة -->
+<div class="page" id="cost">
+<button class="back" onclick="goHome()">⬅ رجوع</button>
+<h2>🧮 حساب سعر التكلفة</h2>
+
+<label>الأعباء المباشرة (DA)</label>
+<input type="number" id="direct" min="0">
+
+<label>الأعباء غير المباشرة (DA)</label>
+<input type="number" id="indirect" min="0">
+
+<label>عدد الوحدات المنتجة</label>
+<input type="number" id="quantity" min="1">
+
+<button class="action" onclick="calculateCost()">احسب سعر التكلفة</button>
+<div class="result" id="costResult">النتيجة تظهر هنا</div>
+</div>
+
+<!-- المحاسبة التحليلية -->
+<div class="page" id="analytic">
+<button class="back" onclick="goHome()">⬅ رجوع</button>
+<h2>📈 المحاسبة التحليلية</h2>
+<p>حساب تكلفة المنتج وهامش الربح.</p>
+
+<label>التكاليف المباشرة (DA)</label>
+<input type="number" id="adirect" min="0">
+
+<label>التكاليف غير المباشرة (DA)</label>
+<input type="number" id="aindirect" min="0">
+
+<label>عدد المنتجات</label>
+<input type="number" id="aproducts" min="1">
+
+<label>سعر بيع الوحدة (DA)</label>
+<input type="number" id="selling" min="0">
+
+<button class="action" onclick="calculateAnalytic()">تحليل التكاليف</button>
+<div class="result" id="analyticResult">النتيجة تظهر هنا</div>
+</div>
+
+</div>
+
+<footer>Compta Smart © 2026 💜</footer>
+
+<script>
+
+function openPage(id){
+ document.getElementById("home").style.display="none";
+ document.querySelectorAll(".page").forEach(p=>{
+  p.classList.remove("active");
+ });
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+}
+
+function goHome(){
+ document.querySelectorAll(".page").forEach(p=>{
+  p.classList.remove("active");
+ });
+ document.getElementById("home").style.display="block";
+ window.scrollTo(0,0);
+}
+
+function val(id){
+ return Number(document.getElementById(id).value);
+}
+
+function empty(ids){
+ return ids.some(id=>document.getElementById(id).value.trim()==="");
+}
+
+function valid(ids){
+ return ids.every(id=>Number.isFinite(val(id)) && val(id)>=0);
+}
+
+function calculateBalance(){
+ let ids=["fixed","current","liabilities","capital"];
+ let out=document.getElementById("balanceResult");
+
+ if(empty(ids)||!valid(ids)){
+  out.innerText="⚠️ أدخلي جميع المبالغ بقيم صحيحة";
+  return;
+ }
+
+ let assets=val("fixed")+val("current");
+ let sources=val("liabilities")+val("capital");
+ let difference=assets-sources;
+
+ out.innerText=
+ (difference===0?"✅ الميزانية متوازنة":"❌ الميزانية غير متوازنة")+
+ "\nمجموع الأصول: "+assets.toFixed(2)+" DA"+
+ "\nمجموع الخصوم ورأس المال: "+sources.toFixed(2)+" DA"+
+ "\nالفرق: "+difference.toFixed(2)+" DA";
+}
+
+function calculateProfit(){
+ let ids=["revenue","expenses"];
+ let out=document.getElementById("profitResult");
+
+ if(empty(ids)||!valid(ids)){
+  out.innerText="⚠️ أدخلي جميع المبالغ بشكل صحيح";
+  return;
+ }
+
+ let result=val("revenue")-val("expenses");
+
+ out.innerText=
+ result>0?"✅ صافي الربح: "+result.toFixed(2)+" DA":
+ result<0?"❌ صافي الخسارة: "+Math.abs(result).toFixed(2)+" DA":
+ "النتيجة: تعادل (0 DA)";
+}
+
+function calculateCost(){
+ let ids=["direct","indirect","quantity"];
+ let out=document.getElementById("costResult");
+
+ if(empty(ids)||!valid(ids)||val("quantity")<=0){
+  out.innerText="⚠️ أدخلي قيماً صحيحة والكمية أكبر من صفر";
+  return;
+ }
+
+ let total=val("direct")+val("indirect");
+ let unit=total/val("quantity");
+
+ out.innerText=
+ "إجمالي التكاليف: "+total.toFixed(2)+" DA"+
+ "\nتكلفة الوحدة: "+unit.toFixed(2)+" DA";
+}
+
+function calculateAnalytic(){
+ let ids=["adirect","aindirect","aproducts","selling"];
+ let out=document.getElementById("analyticResult");
+
+ if(empty(ids)||!valid(ids)||val("aproducts")<=0){
+  out.innerText="⚠️ أدخلي بيانات صحيحة والكمية أكبر من صفر";
+  return;
+ }
+
+ let total=val("adirect")+val("aindirect");
+ let unitCost=total/val("aproducts");
+ let margin=val("selling")-unitCost;
+ let totalMargin=margin*val("aproducts");
+
+ out.innerText=
+ "إجمالي التكاليف: "+total.toFixed(2)+" DA"+
+ "\nتكلفة الوحدة: "+unitCost.toFixed(2)+" DA"+
+ "\nهامش الوحدة: "+margin.toFixed(2)+" DA"+
+ "\nالهامش الإجمالي: "+totalMargin.toFixed(2)+" DA"+
+ (margin>=0?"\n✅ هامش موجب أو متعادل":"\n❌ هامش سالب");
+}
+
+</script>
+
+</body>
+</html>
